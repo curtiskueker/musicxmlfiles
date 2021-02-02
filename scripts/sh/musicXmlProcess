@@ -1,0 +1,61 @@
+#!/bin/bash
+
+process_usage () {
+  echo "Usage: musicXmlProcess {musicXmlValidate|musicXml2Db|musicXml2Ly|musicXml2Pdf|db2MusicXml|db2Ly|db2Pdf|ly2Pdf} [outputDirectory] inputList"
+  exit 1;
+}
+
+SCRIPT_DIRECTORY=scripts/sh
+OUTPUT_DIRECTORY=''
+
+SCRIPT_NAME=$1; shift
+
+case $SCRIPT_NAME in
+  musicXmlValidate|musicXml2Db|musicXml2Ly|musicXml2Pdf|db2MusicXml|db2Ly|db2Pdf|ly2Pdf) ;;
+  *) process_usage ;;
+esac
+
+if [ $SCRIPT_NAME != musicXml2Db ] && [ $SCRIPT_NAME != musicXmlValidate ]
+  then
+    OUTPUT_DIRECTORY=$1; shift
+    if [ -z $OUTPUT_DIRECTORY ] ; then process_usage; fi
+    if [ ! -d $OUTPUT_DIRECTORY ]
+      then
+        echo $OUTPUT_DIRECTORY "is not a directory"
+        exit 1;
+    fi
+fi
+
+if [[ -p /dev/stdin ]]
+    then INPUT_LIST=$(cat -)
+    else INPUT_LIST=("$@")
+fi
+
+if [[ ${#INPUT_LIST[@]} -eq 0 ]] ; then process_usage; fi
+
+for INPUT_ITEM in "${INPUT_LIST[@]}" ; do
+    echo "Executing:" $SCRIPT_NAME $INPUT_ITEM
+    case $SCRIPT_NAME in
+      musicXmlValidate|musicXml2Db)
+        ${SCRIPT_DIRECTORY}/$SCRIPT_NAME $INPUT_ITEM
+        ;;
+      musicXml2Ly|musicXml2Pdf)
+        LOCALFILENAME=$(basename ${INPUT_ITEM})
+        OUTPUT_FILE=${OUTPUT_DIRECTORY}/${LOCALFILENAME%.*}
+        ${SCRIPT_DIRECTORY}/$SCRIPT_NAME -d $INPUT_ITEM $OUTPUT_FILE
+        ;;
+      db2MusicXml|db2Ly|db2Pdf)
+        OUTPUT_FILE=${OUTPUT_DIRECTORY}/${INPUT_ITEM}
+        ${SCRIPT_DIRECTORY}/$SCRIPT_NAME -d $INPUT_ITEM $OUTPUT_FILE
+        ;;
+      ly2Pdf)
+        LOCALFILENAME=$(basename ${INPUT_ITEM})
+        OUTPUT_FILE=${OUTPUT_DIRECTORY}/${LOCALFILENAME%.*}
+        ${SCRIPT_DIRECTORY}/$SCRIPT_NAME $INPUT_ITEM $OUTPUT_FILE
+        ;;
+      *) exit 1 ;;
+    esac
+done
+
+exit 0;
+

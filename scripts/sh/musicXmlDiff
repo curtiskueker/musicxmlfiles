@@ -1,0 +1,29 @@
+#!/bin/bash
+
+if [ $# -ne 2 ]
+  then
+    echo "Usage: musicXmlDiff xmlFile1 xmlFile2" 1>&2
+    exit 1;
+fi
+
+FILE_1=$1
+FILE_2=$2
+
+C14_FILE_1="$(mktemp /tmp/XXXXXX.c14.1.xml)"
+C14_FILE_2="$(mktemp /tmp/XXXXXX.c14.2.xml)"
+
+xmllint --exc-c14n $FILE_1 > $C14_FILE_1
+xmllint --exc-c14n $FILE_2 > $C14_FILE_2
+
+FORMAT_FILE_1="$(mktemp /tmp/XXXXXX.format.1.xml)"
+FORMAT_FILE_2="$(mktemp /tmp/XXXXXX.format.2.xml)"
+
+xmllint --format $C14_FILE_1 > $FORMAT_FILE_1
+xmllint --format $C14_FILE_2 > $FORMAT_FILE_2
+
+diff $FORMAT_FILE_1 $FORMAT_FILE_2 | grep '<'
+
+TEMP_FILES=("$C14_FILE_1" "$C14_FILE_2" "$FORMAT_FILE_1" "$FORMAT_FILE_2")
+for temp_file in "${TEMP_FILES[@]}"; do rm $temp_file; done
+
+exit 0;

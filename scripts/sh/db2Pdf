@@ -1,0 +1,29 @@
+#!/bin/bash
+
+# SET THIS TO DIRECTORY JAR FILE RESIDES IN
+JAR_DIR=/home/curtis/.m2/repository/org/curtis/musicxml/1.0
+# SET THIS TO JAR FILE NAME
+JAR_FILE=musicxml-1.0-jar-with-dependencies.jar
+
+CLASSPATH=${JAR_DIR}/${JAR_FILE}
+
+SCORE_ID=''
+SCORENAME=''
+DEBUG=''
+
+while getopts 'd' flag; do
+  case "${flag}" in
+    d) DEBUG="DEBUG" ;;
+  esac
+done
+shift $(expr $OPTIND - 1)
+INPUT=$1
+if [[ $INPUT =~ ^[0-9]+$ ]] ; then
+  SCORE_ID=$INPUT
+else
+  SCORENAME=$INPUT
+fi
+OUTPUT_FILE=$2
+
+java -classpath ${CLASSPATH} -Dnet.sf.ehcache.enableShutdownHook=true org.curtis.musicxml.bin.Db2Pdf SCORENAME="$SCORENAME" SCORE_ID=$SCORE_ID OUTPUT_FILE=$OUTPUT_FILE $DEBUG
+exit $?
