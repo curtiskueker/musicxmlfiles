@@ -24,7 +24,7 @@ EXECUTION
 
 Run with the command: musicxmltasks
 
-The script runs 'gtk-launch' if gtk-launch is avaiable.  Otherwise, the script runs '$JAVA_HOME/bin/java -jar musicxmltasks.jar' using the installed musicxmltasks.jar file.
+The script runs 'gtk-launch' if gtk-launch is available.  Otherwise, the script runs '$JAVA_HOME/bin/java -jar musicxmltasks.jar' using the installed musicxmltasks.jar file.
 
 COMMAND-LINE SCRIPTS
 ====================
