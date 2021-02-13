@@ -1,0 +1,49 @@
+MusicXmlTasks
+
+MusicXmlTasks is a JavaFX interface to an application that converts MusicXML files to database records, LilyPond files, or PDF files.  It will also convert previously created
+database records to MusicXML, LilyPond, or PDF files.
+
+Databases supported: MySQL, PostgreSQL, Oracle Express Edition.  Users are expected to install and configure any database before using this application to convert to and from
+database records.
+
+Java installation required: Tested with version Java 12.0.2.  Set JAVA_HOME to Java installation directory, and add $JAVA_HOME/bin to PATH.
+
+INSTRUCTIONS
+
+INSTALLATION INSTRUCTIONS
+=========================
+
+Run install.sh as root to install the application.
+
+Installs to /usr/lib/musicxmltasks, with symbolic link /usr/bin/musicxmltsaks -> /usr/lib/musicxmltasks/bin/musicxmltasks.
+
+Run uninstall.sh as root to uninstall the application.
+
+EXECUTION
+=========
+
+Run with the command: musicxmltasks
+
+The script runs 'gtk-launch' if gtk-launch is avaiable.  Otherwise, the script runs '$JAVA_HOME/bin/java -jar musicxmltasks.jar' using the installed musicxmltasks.jar file.
+
+COMMAND-LINE SCRIPTS
+====================
+Installation includes the following command-line scripts so that interface functionality can be executed at the command line:
+
+Conversion scripts:
+
+db2Ly
+db2MusicXml
+db2Pdf
+ly2Pdf
+musicXml2Db
+musicXml2Ly
+musicXml2Pdf
+
+Other scripts:
+
+musicXmlValidate: Validates a MusicXML file against the MusicXML 3.1 schema
+musicXmlDiff: Outputs the difference between two MusicXML files, after converting each file to XML canonical format
+musicXmlProcess: Performs bulk operations on files and records for the conversion scripts and musicXmlValidate
+
+Each script has its own man page, which can be accessed after install.

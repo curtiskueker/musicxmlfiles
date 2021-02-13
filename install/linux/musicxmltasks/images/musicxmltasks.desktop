@@ -1,0 +1,11 @@
+[Desktop Entry]
+Encoding=UTF-8
+Version=1.0
+Type=Application
+Name=MusicXml Tasks
+Icon=MUSICXMLTASKS_HOME/images/musicxmltasks.png
+Exec=JAVA_HOME/bin/java -jar MUSICXMLTASKS_HOME/lib/musicxmltasks.jar
+StartupNotify=false
+StartupWMClass=org.curtis.ui.javafx.TasksApplication
+OnlyShowIn=Unity;
+X-UnityGenerated=true
