@@ -1,15 +1,16 @@
-#!/bin/sh
+#!/bin/bash
 
 EXEC_DIR=/usr/bin
-EXECUTABLE=$EXEC_DIR/musicxmltasks
+EXECUTABLES=(musicxmltasks musicXml2Db musicXml2Ly musicXml2Pdf db2MusicXml db2Ly db2Pdf ly2Pdf musicXmlValidate musicXmlDiff musicXmlProcess)
 INSTALL_DIR=/usr/lib/musicxmltasks
 INSTALL_BIN_DIR=$INSTALL_DIR/bin
-INSTALL_DIR_EXECUTABLE=$INSTALL_BIN_DIR/musicxmltasks
 
-if [ -L $EXECUTABLE ]; then
-    echo "Executable $EXECUTABLE already exists.  Run uninstall.sh.  Then reinstall."
-    exit
-fi
+for EXECUTABLE in "${EXECUTABLES[@]}" ; do
+  if [ -L $EXEC_DIR/$EXECUTABLE ]; then
+      echo "Executable $EXECUTABLE already exists.  Run uninstall.sh.  Then reinstall."
+      exit
+  fi
+done
 
 if [ -d $INSTALL_DIR ]; then
     echo "Install directory $INSTALL_DIR already exists.  Run uninstall.sh.  Then reinstall."
@@ -33,10 +34,16 @@ LIB_DIR=$TEMP_DIR/lib
 IMAGE_DIR=$TEMP_DIR/images
 
 mkdir $BIN_DIR
-TEMP_FILE=$BIN_DIR/musicxmltasks.tmp
-EXEC_FILE=$BIN_DIR/musicxmltasks
-sed "s|\(MUSICXMLTASKS_HOME=\)|\1${INSTALL_DIR}|g" bin/musicxmltasks > $TEMP_FILE
-mv $TEMP_FILE $EXEC_FILE
+for BIN_FILENAME in bin/* ; do
+  BASE_BIN_FILENAME="$(basename ${BIN_FILENAME})"
+  TEMP_FILE=$BIN_DIR/${BASE_BIN_FILENAME}.tmp
+  EXEC_FILE=$BIN_DIR/${BASE_BIN_FILENAME}
+
+  JAR_FILENAME=musicxmltasks.jar
+  cat $BIN_FILENAME | sed "s|\(JAR_FILE=\)|\1${JAR_FILENAME}|g" | sed "s|\(MUSICXMLTASKS_HOME=\)|\1${INSTALL_DIR}|g" | sed "s|\(JAR_DIR=\)|\1${INSTALL_DIR}/lib|g" > $TEMP_FILE
+
+  mv $TEMP_FILE $EXEC_FILE
+done
 
 mkdir $LIB_DIR
 cp lib/musicxmltasks.jar $LIB_DIR
@@ -61,12 +68,16 @@ fi
 
 mv $TEMP_DIR $INSTALL_DIR
 
-if [ ! -f $INSTALL_DIR_EXECUTABLE ]; then
-    echo "Install to $INSTALL_DIR not successful.  Exit."
-    exit
-fi
+for EXECUTABLE in "${EXECUTABLES[@]}" ; do
+  INSTALL_DIR_EXECUTABLE=${INSTALL_BIN_DIR}/${EXECUTABLE}
+  if [ ! -f $INSTALL_DIR_EXECUTABLE ]; then
+      echo "Install to $INSTALL_DIR not successful.  Exit."
+      exit
+  fi
 
-ln -s  $INSTALL_DIR_EXECUTABLE $EXECUTABLE
-chmod 0755 $EXECUTABLE
+  EXEC_DIR_EXECUTABLE=${EXEC_DIR}/${EXECUTABLE}
+  ln -s  $INSTALL_DIR_EXECUTABLE $EXEC_DIR_EXECUTABLE
+  chmod 0755 $EXEC_DIR_EXECUTABLE
+done
 
 echo "Done."

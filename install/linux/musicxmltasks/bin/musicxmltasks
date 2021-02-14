@@ -2,6 +2,7 @@
 
 MUSICXMLTASKS_HOME=
 JAR_DIR=$MUSICXMLTASKS_HOME/lib
+JAR_FILE=
 
 # execute the desktop or jar file
 DESKTOP_FILE=/usr/share/applications/musicxmltasks.desktop
@@ -10,6 +11,6 @@ GTK_LAUNCH=`which gtk-launch`
 if [ ! -z "$GTK_LAUNCH" ] && [ -f $DESKTOP_FILE ]; then
     $GTK_LAUNCH musicxmltasks
 else
-    $JAVA_HOME/bin/java -jar $JAR_DIR/musicxmltasks.jar
+    $JAVA_HOME/bin/java -jar ${JAR_DIR}/${JAR_FILE}
 fi
 
