@@ -1122,8 +1122,25 @@ create sequence native start 1 increment 1;
     create table score (
        id int4 not null,
         score_name varchar(255),
+        score_type varchar(255),
         version varchar(255),
+        score_declaration_id int4,
         score_header_id int4,
+        primary key (id)
+    );
+
+    create table score_declaration (
+       id int4 not null,
+        score_doctype_id int4,
+        score_xml_declaration_id int4,
+        primary key (id)
+    );
+
+    create table score_doctype (
+       id int4 not null,
+        name varchar(255),
+        public_id varchar(255),
+        system_id varchar(255),
         primary key (id)
     );
 
@@ -1164,6 +1181,14 @@ create sequence native start 1 increment 1;
         ordering int4,
         value varchar(255),
         score_part_id int4 not null,
+        primary key (id)
+    );
+
+    create table score_xml_declaration (
+       id int4 not null,
+        encoding varchar(255),
+        standalone char(1),
+        version varchar(255),
         primary key (id)
     );
 
@@ -2356,9 +2381,24 @@ create sequence native start 1 increment 1;
        references display;
 
     alter table score 
+       add constraint FKj2426vk2r86o2emg1l2caunsm 
+       foreign key (score_declaration_id) 
+       references score_declaration;
+
+    alter table score 
        add constraint FKibymmlpensin2h24pto4i98l0 
        foreign key (score_header_id) 
        references score_header;
+
+    alter table score_declaration 
+       add constraint FKcuaabc2xsur39ifargl85am1c 
+       foreign key (score_doctype_id) 
+       references score_doctype;
+
+    alter table score_declaration 
+       add constraint FK55ism40bt3poh20veieh14fj4 
+       foreign key (score_xml_declaration_id) 
+       references score_xml_declaration;
 
     alter table score_header 
        add constraint FKgo0fi29rwnnmp0dg6nim7ed2s 

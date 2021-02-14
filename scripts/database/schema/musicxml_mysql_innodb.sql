@@ -1121,6 +1121,7 @@
     create table score (
        id integer not null auto_increment,
         score_name varchar(255),
+        score_type varchar(255),
         version varchar(255),
         score_declaration_id integer,
         score_header_id integer,
