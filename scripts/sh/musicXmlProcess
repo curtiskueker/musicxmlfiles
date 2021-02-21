@@ -1,7 +1,7 @@
 #!/bin/bash
 
 process_usage () {
-  echo "Usage: musicXmlProcess {musicXmlValidate|musicXml2Db|musicXml2Ly|musicXml2Pdf|db2MusicXml|db2Ly|db2Pdf|ly2Pdf} [outputDirectory] inputList"
+  echo "Usage: musicXmlProcess {musicXmlValidate|musicXmlCompress|musicXml2Db|musicXml2Ly|musicXml2Pdf|db2MusicXml|db2Ly|db2Pdf|ly2Pdf} [outputDirectory] inputList"
   exit 1;
 }
 
@@ -11,7 +11,7 @@ OUTPUT_DIRECTORY=''
 SCRIPT_NAME=$1; shift
 
 case $SCRIPT_NAME in
-  musicXmlValidate|musicXml2Db|musicXml2Ly|musicXml2Pdf|db2MusicXml|db2Ly|db2Pdf|ly2Pdf) ;;
+  musicXmlValidate|musicXmlCompress|musicXml2Db|musicXml2Ly|musicXml2Pdf|db2MusicXml|db2Ly|db2Pdf|ly2Pdf) ;;
   *) process_usage ;;
 esac
 
@@ -48,7 +48,7 @@ for INPUT_ITEM in "${INPUT_LIST[@]}" ; do
         OUTPUT_FILE=${OUTPUT_DIRECTORY}/${INPUT_ITEM}
         ${SCRIPT_DIRECTORY}/$SCRIPT_NAME -d $INPUT_ITEM $OUTPUT_FILE
         ;;
-      ly2Pdf)
+      ly2Pdf|musicXmlCompress)
         LOCALFILENAME=$(basename ${INPUT_ITEM})
         OUTPUT_FILE=${OUTPUT_DIRECTORY}/${LOCALFILENAME%.*}
         ${SCRIPT_DIRECTORY}/$SCRIPT_NAME $INPUT_ITEM $OUTPUT_FILE

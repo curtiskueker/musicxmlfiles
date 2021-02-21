@@ -1,0 +1,32 @@
+#!/bin/bash
+
+JAR_DIR=/home/curtis/.m2/repository/org/curtis/musicxml/1.0
+JAR_FILE=musicxml-1.0-jar-with-dependencies.jar
+
+CLASSPATH=${JAR_DIR}/${JAR_FILE}
+
+INPUT_DATA=''
+TEMP_FILE=''
+
+if [[ -p /dev/stdin ]]
+    then
+    INPUT_DATA=$(cat -)
+    TEMP_FILE="$(mktemp /tmp/XXXXXX.xml)"
+    echo "$INPUT_DATA" > $TEMP_FILE
+    INPUT_FILE=$TEMP_FILE
+    else
+    INPUT_FILE=$1
+fi
+if [ -z "$INPUT_DATA" ]
+then
+  INPUT_FILE=$1
+  OUTPUT_FILE=$2
+else
+  OUTPUT_FILE=$1
+fi
+
+java -classpath ${CLASSPATH} -Dnet.sf.ehcache.enableShutdownHook=true org.curtis.musicxml.bin.CompressXml INPUT_FILE=$INPUT_FILE OUTPUT_FILE=$OUTPUT_FILE
+RETURN_CODE=$?
+
+if [ -f "$TEMP_FILE" ]; then rm $TEMP_FILE; fi
+exit $RETURN_CODE;
