@@ -1,7 +1,7 @@
 #!/bin/bash
 
 EXEC_DIR=/usr/bin
-EXECUTABLES=(musicxmltasks musicXml2Db musicXml2Ly musicXml2Pdf db2MusicXml db2Ly db2Pdf ly2Pdf musicXmlValidate musicXmlDiff musicXmlProcess)
+EXECUTABLES=(musicxmltasks musicXml2Db musicXml2Ly musicXml2Pdf db2MusicXml db2Ly db2Pdf ly2Pdf musicXmlValidate musicXmlCompress musicXmlDiff musicXmlProcess)
 INSTALL_DIR=/usr/lib/musicxmltasks
 DESKTOP_FILE=/usr/share/applications/musicxmltasks.desktop
 
