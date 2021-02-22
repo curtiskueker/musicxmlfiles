@@ -8,12 +8,12 @@ CLASSPATH=${JAR_DIR}/${JAR_FILE}
 SCORE_ID=''
 SCORENAME=''
 INCLUDE_BREAKS=''
-DEBUG=''
+VERBOSE=''
 
-while getopts 'bd' flag; do
+while getopts 'bv' flag; do
   case "${flag}" in
     b) INCLUDE_BREAKS="INCLUDE_BREAKS" ;;
-    d) DEBUG="DEBUG" ;;
+    v) VERBOSE="VERBOSE" ;;
   esac
 done
 shift $(expr $OPTIND - 1)
@@ -26,5 +26,5 @@ fi
 OUTPUT_FILE=$2
 if [ -z $OUTPUT_FILE ]; then OUTPUT_FILE="STDOUT"; fi
 
-java -classpath ${CLASSPATH} -Dnet.sf.ehcache.enableShutdownHook=true org.curtis.musicxml.bin.Db2Ly SCORENAME="$SCORENAME" SCORE_ID=$SCORE_ID OUTPUT_FILE=$OUTPUT_FILE $INCLUDE_BREAKS $DEBUG
+java -classpath ${CLASSPATH} -Dnet.sf.ehcache.enableShutdownHook=true org.curtis.musicxml.bin.Db2Ly SCORENAME="$SCORENAME" SCORE_ID=$SCORE_ID OUTPUT_FILE=$OUTPUT_FILE $INCLUDE_BREAKS $VERBOSE
 exit $?

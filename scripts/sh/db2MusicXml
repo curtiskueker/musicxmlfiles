@@ -8,13 +8,13 @@ CLASSPATH=${JAR_DIR}/${JAR_FILE}
 SCORE_ID=''
 SCORENAME=''
 SKIP_COMMENTS=''
-DEBUG=''
+VERBOSE=''
 ZIPPED_FILE=''
 
-while getopts 'cdz:' flag; do
+while getopts 'cvz:' flag; do
   case "${flag}" in
     c) SKIP_COMMENTS="SKIP_COMMENTS" ;;
-    d) DEBUG="DEBUG" ;;
+    v) VERBOSE="VERBOSE" ;;
     z) ZIPPED_FILE="${OPTARG}" ;;
   esac
 done
@@ -28,5 +28,5 @@ fi
 OUTPUT_FILE=$2
 if [ -z $OUTPUT_FILE ]; then OUTPUT_FILE="STDOUT"; fi
 
-java -classpath ${CLASSPATH} -Dnet.sf.ehcache.enableShutdownHook=true org.curtis.musicxml.bin.Db2MusicXml SCORENAME="$SCORENAME" SCORE_ID=$SCORE_ID OUTPUT_FILE=$OUTPUT_FILE ZIPPED_FILE=$ZIPPED_FILE $SKIP_COMMENTS $DEBUG
+java -classpath ${CLASSPATH} -Dnet.sf.ehcache.enableShutdownHook=true org.curtis.musicxml.bin.Db2MusicXml SCORENAME="$SCORENAME" SCORE_ID=$SCORE_ID OUTPUT_FILE=$OUTPUT_FILE ZIPPED_FILE=$ZIPPED_FILE $SKIP_COMMENTS $VERBOSE
 exit #?

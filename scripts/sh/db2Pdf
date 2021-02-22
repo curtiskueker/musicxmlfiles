@@ -7,11 +7,11 @@ CLASSPATH=${JAR_DIR}/${JAR_FILE}
 
 SCORE_ID=''
 SCORENAME=''
-DEBUG=''
+VERBOSE=''
 
-while getopts 'd' flag; do
+while getopts 'v' flag; do
   case "${flag}" in
-    d) DEBUG="DEBUG" ;;
+    v) VERBOSE="VERBOSE" ;;
   esac
 done
 shift $(expr $OPTIND - 1)
@@ -23,5 +23,5 @@ else
 fi
 OUTPUT_FILE=$2
 
-java -classpath ${CLASSPATH} -Dnet.sf.ehcache.enableShutdownHook=true org.curtis.musicxml.bin.Db2Pdf SCORENAME="$SCORENAME" SCORE_ID=$SCORE_ID OUTPUT_FILE=$OUTPUT_FILE $DEBUG
+java -classpath ${CLASSPATH} -Dnet.sf.ehcache.enableShutdownHook=true org.curtis.musicxml.bin.Db2Pdf SCORENAME="$SCORENAME" SCORE_ID=$SCORE_ID OUTPUT_FILE=$OUTPUT_FILE $VERBOSE
 exit $?

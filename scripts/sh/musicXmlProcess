@@ -42,11 +42,11 @@ for INPUT_ITEM in "${INPUT_LIST[@]}" ; do
       musicXml2Ly|musicXml2Pdf)
         LOCALFILENAME=$(basename ${INPUT_ITEM})
         OUTPUT_FILE=${OUTPUT_DIRECTORY}/${LOCALFILENAME%.*}
-        ${SCRIPT_DIRECTORY}/$SCRIPT_NAME -d $INPUT_ITEM $OUTPUT_FILE
+        ${SCRIPT_DIRECTORY}/$SCRIPT_NAME -v $INPUT_ITEM $OUTPUT_FILE
         ;;
       db2MusicXml|db2Ly|db2Pdf)
         OUTPUT_FILE=${OUTPUT_DIRECTORY}/${INPUT_ITEM}
-        ${SCRIPT_DIRECTORY}/$SCRIPT_NAME -d $INPUT_ITEM $OUTPUT_FILE
+        ${SCRIPT_DIRECTORY}/$SCRIPT_NAME -v $INPUT_ITEM $OUTPUT_FILE
         ;;
       ly2Pdf|musicXmlCompress)
         LOCALFILENAME=$(basename ${INPUT_ITEM})

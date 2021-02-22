@@ -5,7 +5,7 @@ JAR_FILE=musicxml-1.0-jar-with-dependencies.jar
 
 CLASSPATH=${JAR_DIR}/${JAR_FILE}
 
-DEBUG=''
+VERBOSE=''
 INPUT_DATA=''
 INPUT_FILE=''
 TEMP_FILE=''
@@ -19,9 +19,9 @@ if [[ -p /dev/stdin ]]
     INPUT_FILE=$TEMP_FILE
 fi
 
-while getopts 'd' flag; do
+while getopts 'v' flag; do
   case "${flag}" in
-    d) DEBUG="DEBUG" ;;
+    v) VERBOSE="VERBOSE" ;;
   esac
 done
 shift $(expr $OPTIND - 1)
@@ -40,7 +40,7 @@ fi
 
 if [ $RETURN_CODE -eq 0 ]
 then
-  java -classpath ${CLASSPATH} -Dnet.sf.ehcache.enableShutdownHook=true org.curtis.musicxml.bin.MusicXml2Db INPUT_FILE=$INPUT_FILE SCORENAME="$SCORENAME" $DEBUG
+  java -classpath ${CLASSPATH} -Dnet.sf.ehcache.enableShutdownHook=true org.curtis.musicxml.bin.MusicXml2Db INPUT_FILE=$INPUT_FILE SCORENAME="$SCORENAME" $VERBOSE
   RETURN_CODE=$?
 fi
 
