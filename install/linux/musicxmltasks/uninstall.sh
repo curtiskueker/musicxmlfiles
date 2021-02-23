@@ -4,6 +4,7 @@ EXEC_DIR=/usr/bin
 EXECUTABLES=(musicxmltasks musicXml2Db musicXml2Ly musicXml2Pdf db2MusicXml db2Ly db2Pdf ly2Pdf musicXmlValidate musicXmlCompress musicXmlDiff musicXmlProcess)
 INSTALL_DIR=/usr/lib/musicxmltasks
 DESKTOP_FILE=/usr/share/applications/musicxmltasks.desktop
+MAN_DIR=/usr/share/man/man1
 
 for EXECUTABLE in "${EXECUTABLES[@]}" ; do
   EXEC_DIR_EXECUTABLE=${EXEC_DIR}/${EXECUTABLE}
@@ -25,5 +26,10 @@ rm -rf $INSTALL_DIR
 if [ -f $DESKTOP_FILE ]; then
     rm $DESKTOP_FILE
 fi
+
+for EXECUTABLE in "${EXECUTABLES[@]}" ; do
+  MAN_FILE=${MAN_DIR}/${EXECUTABLE}.1.gz
+  if [ -f $MAN_FILE ]; then rm $MAN_FILE; fi
+done
 
 echo "Done."

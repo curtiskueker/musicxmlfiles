@@ -4,6 +4,8 @@ EXEC_DIR=/usr/bin
 EXECUTABLES=(musicxmltasks musicXml2Db musicXml2Ly musicXml2Pdf db2MusicXml db2Ly db2Pdf ly2Pdf musicXmlValidate musicXmlCompress musicXmlDiff musicXmlProcess)
 INSTALL_DIR=/usr/lib/musicxmltasks
 INSTALL_BIN_DIR=$INSTALL_DIR/bin
+INSTALL_MAN_DIR=$INSTALL_DIR/man
+TARGET_MAN_DIR=/usr/share/man/man1
 
 for EXECUTABLE in "${EXECUTABLES[@]}" ; do
   if [ -L $EXEC_DIR/$EXECUTABLE ]; then
@@ -32,6 +34,7 @@ fi
 BIN_DIR=$TEMP_DIR/bin
 LIB_DIR=$TEMP_DIR/lib
 IMAGE_DIR=$TEMP_DIR/images
+MAN_DIR=$TEMP_DIR/man
 
 mkdir $BIN_DIR
 for BIN_FILENAME in bin/* ; do
@@ -52,6 +55,9 @@ APPLICATIONS_DIR=/usr/share/applications
 mkdir $IMAGE_DIR
 cp images/musicxmltasks.png $IMAGE_DIR
 
+mkdir $MAN_DIR
+cp man/* $MAN_DIR
+
 if [ -d $APPLICATIONS_DIR ]; then
     DESKTOP_TEMP_FILE=$IMAGE_DIR/musicxmltasks.desktop.tmp
     sed "s|\(MUSICXMLTASKS_HOME\)|${INSTALL_DIR}|g; s|\(JAVA_HOME\)|${JAVA_HOME}|g" images/musicxmltasks.desktop > $DESKTOP_TEMP_FILE
@@ -62,7 +68,7 @@ fi
 chmod -R 0755 $TEMP_DIR
 
 if [ -d $INSTALL_DIR ]; then
-    echo "Install direction $INSTALL_DIR already exists.  Run install.sh.  Then reinstall."
+    echo "Install direction $INSTALL_DIR already exists.  Run uninstall.sh.  Then reinstall."
     exit
 fi
 
@@ -78,6 +84,9 @@ for EXECUTABLE in "${EXECUTABLES[@]}" ; do
   EXEC_DIR_EXECUTABLE=${EXEC_DIR}/${EXECUTABLE}
   ln -s  $INSTALL_DIR_EXECUTABLE $EXEC_DIR_EXECUTABLE
   chmod 0755 $EXEC_DIR_EXECUTABLE
+
+  INSTALL_DIR_MAN=${INSTALL_MAN_DIR}/${EXECUTABLE}
+  if [ -f "$INSTALL_DIR_MAN" ]; then gzip -c $INSTALL_DIR_MAN > ${TARGET_MAN_DIR}/${EXECUTABLE}.1.gz ; fi;
 done
 
 echo "Done."

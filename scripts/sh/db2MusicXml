@@ -1,5 +1,30 @@
 #!/bin/bash
 
+process_usage() { echo "$*" >&2; exit 1; }
+arg_required() { if [ -z "$OPTARG" ]; then process_usage "Argument required for --$flag option"; fi; }
+help() {
+  cat <<HELP
+Usage: db2MusicXml [OPTION] SCORE_ID|SCORE_NAME [OUTPUT_FILE]
+
+Converts a MusicXML database record to MusicXML.
+
+SCORE_ID: the database record value in the score table, field id.
+
+SCORE_NAME: the database record value in the score table, field score_name.
+
+OUTPUT_FILE: the XML output filename.  If filename has .mxl extension,
+output file is zipped, and the -z|--zipped-file option is required.
+If no OUTPUT_FILE argument is given, output is to stdout.
+
+Options:
+  -c, --skip-comments	don't include XML comments and processing instructions in the XML output
+  -v, --verbose		verbose output while processing
+  -z, --zipped-file	name of XML file included in zipped .mxl output file
+HELP
+exit 0
+}
+version() { echo "1.0"; }
+q
 JAR_DIR=/home/curtis/.m2/repository/org/curtis/musicxml/1.0
 JAR_FILE=musicxml-1.0-jar-with-dependencies.jar
 
@@ -11,11 +36,20 @@ SKIP_COMMENTS=''
 VERBOSE=''
 ZIPPED_FILE=''
 
-while getopts 'cvz:' flag; do
+while getopts 'chvz:-:' flag; do
+  if [ "$flag" = "-" ]; then
+    flag="${OPTARG%%=*}"
+    OPTARG="${OPTARG#$flag}"
+    OPTARG="${OPTARG#=}"
+  fi
   case "${flag}" in
-    c) SKIP_COMMENTS="SKIP_COMMENTS" ;;
-    v) VERBOSE="VERBOSE" ;;
-    z) ZIPPED_FILE="${OPTARG}" ;;
+    c|skip-comments) SKIP_COMMENTS="SKIP_COMMENTS" ;;
+    h|help) help ;;
+    v|verbose) VERBOSE="VERBOSE" ;;
+    version) version ;;
+    z|zipped-file) arg_required; ZIPPED_FILE="${OPTARG}" ;;
+    ??*) process_usage "Unrecognized option --$flag" ;;
+    ?) exit 1 ;;
   esac
 done
 shift $(expr $OPTIND - 1)
