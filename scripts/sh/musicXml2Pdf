@@ -1,5 +1,25 @@
 #!/bin/bash
 
+process_usage() { echo "$*" >&2; exit 1; }
+arg_required() { if [ -z "$OPTARG" ]; then process_usage "Argument required for --$flag option"; fi; }
+help() {
+  cat <<HELP
+Usage: musicXml2Pdf [OPTIONS] [INPUT_FILE] OUTPUT_FILE
+
+Converts MusicXML to a PDF file.
+
+INPUT_FILE: the MusicXML input filename.
+MusicXML input can be from stdin in place of an INPUT_FILE argument.
+
+OUTPUT_FILE: the PDF output filename.
+
+Options:
+  -v, --verbose		verbose output while processing
+HELP
+exit 0
+}
+version() { echo "1.0"; }
+
 JAR_DIR=/home/curtis/.m2/repository/org/curtis/musicxml/1.0
 JAR_FILE=musicxml-1.0-jar-with-dependencies.jar
 

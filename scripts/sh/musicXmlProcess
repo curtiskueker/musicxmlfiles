@@ -1,9 +1,42 @@
 #!/bin/bash
 
-process_usage () {
-  echo "Usage: musicXmlProcess {musicXmlValidate|musicXmlCompress|musicXml2Db|musicXml2Ly|musicXml2Pdf|db2MusicXml|db2Ly|db2Pdf|ly2Pdf} [outputDirectory] inputList"
-  exit 1;
+help() {
+  cat <<HELP
+Usage: musicXmlProcess SCRIPT_NAME [OUTPUT_DIRECTORY] INPUT_LIST
+
+Runs SCRIPT_NAME for each item in an INPUT_LIST.
+
+An OUTPUT_DIRECTORY argument is required for some values of SCRIPT_NAME.
+
+SCRIPT_NAME: One of the following values:
+musicXmlValidate
+musicXmlCompress
+musicXml2Db
+musicXml2Ly
+musicXml2Pdf
+db2MusicXml
+db2Ly
+db2Pdf
+ly2Pdf
+
+OUTPUT_DIRECTORY:  Required for SCRIPT_NAME values that generate output:
+musicXmlCompress
+musicXml2Ly
+musicXml2Pdf
+db2MusicXml
+db2Ly
+db2Pdf
+ly2Pdf
+
+INPUT_LIST:
+For scripts that take file input (scripts musicXml* and ly*), input list is a list of directories and file names, including wildcards.
+
+For scripts that take database record input (scripts db*), input list is a list of score names including wildcards, score IDs, and score ID ranges.
+
+HELP
+exit 0
 }
+version() { echo "1.0"; }
 
 SCRIPT_DIRECTORY=scripts/sh
 OUTPUT_DIRECTORY=''
@@ -12,7 +45,7 @@ SCRIPT_NAME=$1; shift
 
 case $SCRIPT_NAME in
   musicXmlValidate|musicXmlCompress|musicXml2Db|musicXml2Ly|musicXml2Pdf|db2MusicXml|db2Ly|db2Pdf|ly2Pdf) ;;
-  *) process_usage ;;
+  *) process_usage "Usage: musicXmlProcess SCRIPT_NAME [OUTPUT_DIRECTORY] INPUT_LIST" ;;
 esac
 
 if [ $SCRIPT_NAME != musicXml2Db ] && [ $SCRIPT_NAME != musicXmlValidate ]

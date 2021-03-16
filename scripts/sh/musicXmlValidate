@@ -1,5 +1,19 @@
 #!/bin/bash
 
+help() {
+  cat <<HELP
+Usage: musicXmlValidate [INPUT_FILE]
+
+Validates a MusicXML file against the MusicXML 3.1 schema.
+
+INPUT_FILE: the MusicXML input filename.
+MusicXML input can be from stdin in place of an INPUT_FILE argument.
+
+HELP
+exit 0
+}
+version() { echo "1.0"; }
+
 JAR_DIR=/home/curtis/.m2/repository/org/curtis/musicxml/1.0
 JAR_FILE=musicxml-1.0-jar-with-dependencies.jar
 
