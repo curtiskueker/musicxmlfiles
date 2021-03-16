@@ -13,7 +13,7 @@ MusicXML input can be from stdin in place of an INPUT_FILE argument.
 OUTPUT_FILE: the PDF output filename.
 
 Options:
-  -v, --verbose		verbose output while processing
+  -v, --verbose		MusicXML and LilyPond part and measure number output while processing
 HELP
 exit 0
 }

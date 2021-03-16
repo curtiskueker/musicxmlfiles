@@ -14,7 +14,7 @@ SCORE_NAME: the database record score name.
 The score name must be unique in the database.
 
 Options:
-  -v, --verbose		verbose output while processing
+  -v, --verbose		MusicXML part and measure number output while processing
 HELP
 exit 0
 }

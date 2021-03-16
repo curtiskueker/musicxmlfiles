@@ -15,7 +15,7 @@ If no OUTPUT_FILE argument is given, output is to stdout.
 
 Options:
   -b, --include-breaks	include page and system breaks in the LilyPond output
-  -v, --verbose		verbose output while processing
+  -v, --verbose		MusicXML and LilyPond part and measure number output while processing
 HELP
 exit 0
 }
