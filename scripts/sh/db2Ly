@@ -1,7 +1,6 @@
 #!/bin/bash
 
 process_usage() { echo "$*" >&2; exit 1; }
-arg_required() { if [ -z "$OPTARG" ]; then process_usage "Argument required for --$flag option"; fi; }
 help() {
   cat <<HELP
 Usage: db2Ly [OPTIONS] SCORE_ID|SCORE_NAME [OUTPUT_FILE]
@@ -33,10 +32,19 @@ SCORENAME=''
 INCLUDE_BREAKS=''
 VERBOSE=''
 
-while getopts 'bv' flag; do
+while getopts 'bhv-:' flag; do
+  if [ "$flag" = "-" ]; then
+    flag="${OPTARG%%=*}"
+    OPTARG="${OPTARG#$flag}"
+    OPTARG="${OPTARG#=}"
+  fi
   case "${flag}" in
-    b) INCLUDE_BREAKS="INCLUDE_BREAKS" ;;
-    v) VERBOSE="VERBOSE" ;;
+    b|include-breaks) INCLUDE_BREAKS="INCLUDE_BREAKS" ;;
+    h|help) help ;;
+    v|verbose) VERBOSE="VERBOSE" ;;
+    version) version ;;
+    ??*) process_usage "Unrecognized option --$flag" ;;
+    ?) exit 1 ;;
   esac
 done
 shift $(expr $OPTIND - 1)
