@@ -3,7 +3,7 @@
 process_usage() { echo "$*" >&2; exit 1; }
 help() {
   cat <<HELP
-Usage: musicXmlProcess SCRIPT_NAME [OUTPUT_DIRECTORY] INPUT_LIST
+Usage: musicXmlProcess [OPTIONS] SCRIPT_NAME [OUTPUT_DIRECTORY] INPUT_LIST
 
 Runs SCRIPT_NAME for each item in an INPUT_LIST.
 
@@ -46,6 +46,18 @@ Comma-separated score name lists are not processed as lists of score names becau
 Score ID lists and ranges can be comma-separated lists of ID numbers with dashes indicating score ranges.
 Example: 3,18-20,39 will execute score IDs 3, 18, 19, 20, and 39.
 
+Examples:
+Output Score ID database records 1 to 50 as MusicXML to directory /tmp/output:
+musicXmlProcess db2MusicXml /tmp/output 1-50
+
+Output database records with score names "movement 1", "movement 2", "movement 3", and "movement 4" as LilyPond files and output to directory /tmp/output:
+musicXmlProcess db2Ly /tmp/output "movement 1" "movement 2" "movement 3" "movement 4"
+
+Load all MusicXML files in directory files/jsbach into the database with verbose output:
+musicXmlProcess -v musicXml2Db files/jsbach/*
+
+Options:
+  -v, --verbose		outputs MusicXML part and measure number input and output, and LilyPond part and measure number output, while processing
 HELP
 exit 0
 }
@@ -72,7 +84,23 @@ get_input_sublist() {
 
 SCRIPT_DIRECTORY=scripts/sh
 OUTPUT_DIRECTORY=''
+VERBOSE=''
 
+while getopts 'hv-:' flag; do
+  if [ "$flag" = "-" ]; then
+    flag="${OPTARG%%=*}"
+    OPTARG="${OPTARG#$flag}"
+    OPTARG="${OPTARG#=}"
+  fi
+  case "${flag}" in
+    h|help) help ;;
+    v|verbose) VERBOSE="-v" ;;
+    version) version ;;
+    ??*) process_usage "Unrecognized option --$flag" ;;
+    ?) exit 1 ;;
+  esac
+done
+shift $(expr $OPTIND - 1)
 SCRIPT_NAME=$1; shift
 
 case $SCRIPT_NAME in
@@ -108,7 +136,7 @@ for INPUT_ITEM in "${INPUT_LIST[@]}" ; do
         for INPUT_ITEM in $FILE_LIST ; do
           LOCALFILENAME=$(basename ${INPUT_ITEM})
           OUTPUT_FILE=${OUTPUT_DIRECTORY}/${LOCALFILENAME%.*}
-          ${SCRIPT_DIRECTORY}/$SCRIPT_NAME -v "$INPUT_ITEM" $OUTPUT_FILE
+          ${SCRIPT_DIRECTORY}/$SCRIPT_NAME $VERBOSE "$INPUT_ITEM" $OUTPUT_FILE
         done
         ;;
       db2MusicXml|db2Ly|db2Pdf)
@@ -117,11 +145,11 @@ for INPUT_ITEM in "${INPUT_LIST[@]}" ; do
             get_input_sublist
             for INPUT_SUBLIST_ITEM in "${INPUT_SUBLIST[@]}" ; do
               OUTPUT_FILE=${OUTPUT_DIRECTORY}/${INPUT_SUBLIST_ITEM}
-              ${SCRIPT_DIRECTORY}/$SCRIPT_NAME -v $INPUT_SUBLIST_ITEM $OUTPUT_FILE
+              ${SCRIPT_DIRECTORY}/$SCRIPT_NAME $VERBOSE $INPUT_SUBLIST_ITEM $OUTPUT_FILE
             done
           else
             OUTPUT_FILE=${OUTPUT_DIRECTORY}/${INPUT_ITEM// /_}
-            ${SCRIPT_DIRECTORY}/$SCRIPT_NAME -v "$INPUT_ITEM" $OUTPUT_FILE
+            ${SCRIPT_DIRECTORY}/$SCRIPT_NAME $VERBOSE "$INPUT_ITEM" $OUTPUT_FILE
         fi
         ;;
       ly2Pdf|musicXmlCompress)
