@@ -18,7 +18,7 @@ If no OUTPUT_FILE argument is given, output is to stdout.
 
 Options:
   -c, --skip-comments	 don't include XML comments and processing instructions in the XML output
-  -v, --verbose		outputs MusicXML part and measure number output while processing
+  -v, --verbose		displays processing output
   -z ZIPPED_FILE_NAME, --zipped-file=ZIPPED_FILE_NAME  name of XML file included in zipped .mxl output file
 HELP
 exit 0

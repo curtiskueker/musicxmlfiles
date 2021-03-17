@@ -14,7 +14,7 @@ SCORE_NAME: the database record value in the score table, field score_name.
 OUTPUT_FILE: the PDF output filename.
 
 Options:
-  -v, --verbose		outputs LilyPond part and measure number output while processing
+  -v, --verbose		displays processing output
 HELP
 exit 0
 }

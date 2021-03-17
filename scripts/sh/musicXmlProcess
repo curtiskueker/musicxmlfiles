@@ -57,7 +57,7 @@ Load all MusicXML files in directory files/jsbach into the database with verbose
 musicXmlProcess -v musicXml2Db files/jsbach/*
 
 Options:
-  -v, --verbose		outputs MusicXML part and measure number input and output, and LilyPond part and measure number output, while processing
+  -v, --verbose		displays processing output
 HELP
 exit 0
 }
