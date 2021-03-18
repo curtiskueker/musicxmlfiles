@@ -1,5 +1,6 @@
 #!/bin/bash
 
+process_usage() { echo "$*" >&2; exit 1; }
 help() {
   cat <<HELP
 Usage: musicXmlDiff INPUT_FILE COMPARE_FILE
@@ -22,6 +23,20 @@ JAR_DIR=/home/curtis/.m2/repository/org/curtis/musicxml/1.0
 JAR_FILE=musicxml-1.0-jar-with-dependencies.jar
 
 CLASSPATH=${JAR_DIR}/${JAR_FILE}
+
+while getopts 'h-:' flag; do
+  if [ "$flag" = "-" ]; then
+    flag="${OPTARG%%=*}"
+    OPTARG="${OPTARG#$flag}"
+    OPTARG="${OPTARG#=}"
+  fi
+  case "${flag}" in
+    h|help) help ; exit 0 ;;
+    version) version ; exit 0 ;;
+    ??*) process_usage "Unrecognized option --$flag" ;;
+    ?) exit 1 ;;
+  esac
+done
 
 INPUT_FILE=$1
 COMPARE_FILE=$2

@@ -1,5 +1,6 @@
 #!/bin/bash
 
+process_usage() { echo "$*" >&2; exit 1; }
 help() {
   cat <<HELP
 Usage: musicXmlCompress [INPUT_FILE] OUTPUT_FILE
@@ -33,6 +34,19 @@ if [[ -p /dev/stdin ]]
     else
     INPUT_FILE=$1
 fi
+while getopts 'h-:' flag; do
+  if [ "$flag" = "-" ]; then
+    flag="${OPTARG%%=*}"
+    OPTARG="${OPTARG#$flag}"
+    OPTARG="${OPTARG#=}"
+  fi
+  case "${flag}" in
+    h|help) help ; exit 0 ;;
+    version) version ; exit 0 ;;
+    ??*) process_usage "Unrecognized option --$flag" ;;
+    ?) exit 1 ;;
+  esac
+done
 if [ -z "$INPUT_DATA" ]
 then
   INPUT_FILE=$1

@@ -44,9 +44,9 @@ while getopts 'chvz:-:' flag; do
   fi
   case "${flag}" in
     c|skip-comments) SKIP_COMMENTS="SKIP_COMMENTS" ;;
-    h|help) help ;;
+    h|help) help ; exit 0 ;;
     v|verbose) VERBOSE="VERBOSE" ;;
-    version) version ;;
+    version) version ; exit 0 ;;
     z|zipped-file) arg_required; ZIPPED_FILE="${OPTARG}" ;;
     ??*) process_usage "Unrecognized option --$flag" ;;
     ?) exit 1 ;;

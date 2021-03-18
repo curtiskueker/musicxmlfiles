@@ -1,5 +1,6 @@
 #!/bin/bash
 
+process_usage() { echo "$*" >&2; exit 1; }
 help() {
   cat <<HELP
 Usage: musicXmlValidate [INPUT_FILE]
@@ -22,6 +23,19 @@ CLASSPATH=${JAR_DIR}/${JAR_FILE}
 INPUT_DATA=''
 TEMP_FILE=''
 
+while getopts 'h-:' flag; do
+  if [ "$flag" = "-" ]; then
+    flag="${OPTARG%%=*}"
+    OPTARG="${OPTARG#$flag}"
+    OPTARG="${OPTARG#=}"
+  fi
+  case "${flag}" in
+    h|help) help ; exit 0 ;;
+    version) version ; exit 0 ;;
+    ??*) process_usage "Unrecognized option --$flag" ;;
+    ?) exit 1 ;;
+  esac
+done
 if [[ -p /dev/stdin ]]
     then
     INPUT_DATA=$(cat -)
