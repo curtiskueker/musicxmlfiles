@@ -9,6 +9,7 @@ musicXml2Pdf \- manual page for musicXml2Pdf 1.0
 Converts MusicXML to a PDF file.
 .PP
 INPUT_FILE: the MusicXML input filename.
+.PP
 MusicXML input can be from stdin in place of an INPUT_FILE argument.
 .PP
 OUTPUT_FILE: the PDF output filename.

@@ -8,6 +8,7 @@ Usage: musicXmlValidate [INPUT_FILE]
 Validates a MusicXML file against the MusicXML 3.1 schema.
 
 INPUT_FILE: the MusicXML input filename.
+
 MusicXML input can be from stdin in place of an INPUT_FILE argument.
 
 HELP

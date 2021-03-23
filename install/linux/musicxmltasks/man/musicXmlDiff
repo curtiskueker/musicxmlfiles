@@ -7,8 +7,11 @@ musicXmlDiff \- manual page for musicXmlDiff 1.0
 \fI\,INPUT_FILE COMPARE_FILE\/\fR
 .SH DESCRIPTION
 Compares two MusicXML files.
+.PP
 Diff output is to stdout.
+.PP
 The two MusicXML files are first standardized using xmllint before the diff is performed.
+.PP
 Unlike Unix diff, all '<' lines appear before all '>' lines.
 .PP
 INPUT_FILE: the MusicXML input filename.

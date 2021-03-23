@@ -9,9 +9,11 @@ musicXml2Ly \- manual page for musicXml2Ly 1.0
 Converts MusicXML to LilyPond.
 .PP
 INPUT_FILE: the MusicXML input filename.
+.PP
 MusicXML input can be from stdin in place of an INPUT_FILE argument.
 .PP
 OUTPUT_FILE: the LilyPond output filename.
+.PP
 If no OUTPUT_FILE argument is given, output is to stdout.
 .SH OPTIONS
 .TP

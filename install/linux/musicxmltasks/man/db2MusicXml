@@ -12,8 +12,10 @@ SCORE_ID: the database record value in the score table, field id.
 .PP
 SCORE_NAME: the database record value in the score table, field score_name.
 .PP
-OUTPUT_FILE: the XML output filename.  If filename has .mxl extension,
-output file is zipped, and the \fB\-z\fR|\-\-zipped\-file option is required.
+OUTPUT_FILE: the XML output filename.
+.PP
+If filename has .mxl extension, output file is zipped, and the \fB\-z\fR|\-\-zipped\-file option is required.
+.PP
 If no OUTPUT_FILE argument is given, output is to stdout.
 .SH OPTIONS
 .TP

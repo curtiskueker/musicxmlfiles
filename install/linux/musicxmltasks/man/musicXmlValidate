@@ -9,6 +9,7 @@ musicXmlValidate \- manual page for musicXmlValidate 1.0
 Validates a MusicXML file against the MusicXML 3.1 schema.
 .PP
 INPUT_FILE: the MusicXML input filename.
+.PP
 MusicXML input can be from stdin in place of an INPUT_FILE argument.
 .SH "SEE ALSO"
 The full documentation for
