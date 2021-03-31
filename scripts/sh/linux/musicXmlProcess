@@ -119,7 +119,7 @@ while getopts 'hv-:' flag; do
     OPTARG="${OPTARG#=}"
   fi
   case "${flag}" in
-    h|help) help ; exit 0 ;;
+    h|help) help ;;
     v|verbose) VERBOSE="-v" ;;
     version) version ; exit 0 ;;
     ??*) process_usage "Unrecognized option --$flag" ;;

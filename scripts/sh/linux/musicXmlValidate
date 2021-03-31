@@ -31,7 +31,7 @@ while getopts 'h-:' flag; do
     OPTARG="${OPTARG#=}"
   fi
   case "${flag}" in
-    h|help) help ; exit 0 ;;
+    h|help) help ;;
     version) version ; exit 0 ;;
     ??*) process_usage "Unrecognized option --$flag" ;;
     ?) exit 1 ;;

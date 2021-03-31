@@ -49,7 +49,7 @@ while getopts 'bhv-:' flag; do
   fi
   case "${flag}" in
     b|include-breaks) INCLUDE_BREAKS="INCLUDE_BREAKS" ;;
-    h|help) help ; exit 0 ;;
+    h|help) help ;;
     v|verbose) VERBOSE="VERBOSE" ;;
     version) version ; exit 0 ;;
     ??*) process_usage "Unrecognized option --$flag" ;;

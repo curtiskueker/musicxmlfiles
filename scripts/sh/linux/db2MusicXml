@@ -46,7 +46,7 @@ while getopts 'chvz:-:' flag; do
   fi
   case "${flag}" in
     c|skip-comments) SKIP_COMMENTS="SKIP_COMMENTS" ;;
-    h|help) help ; exit 0 ;;
+    h|help) help ;;
     v|verbose) VERBOSE="VERBOSE" ;;
     version) version ; exit 0 ;;
     z|zipped-file) arg_required; ZIPPED_FILE="${OPTARG}" ;;
