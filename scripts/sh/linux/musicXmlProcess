@@ -154,15 +154,22 @@ if [[ ${#INPUT_LIST[@]} -eq 0 ]] ; then process_usage "Invalid input list"; fi
 
 for INPUT_ITEM in "${INPUT_LIST[@]}" ; do
     echo "Executing:" $SCRIPT_NAME $INPUT_ITEM
-    case $SCRIPT_NAME in musicXmlValidate|musicXmlCompress|musicXml2Db|musicXml2Ly|musicXml2Pdf|db2MusicXml|db2Ly|db2Pdf|ly2Pdf) FILE_LIST=$(ls -d $INPUT_ITEM) ;; esac
+    case $SCRIPT_NAME in musicXmlValidate|musicXmlCompress|musicXml2Db|musicXml2Ly|musicXml2Pdf|ly2Pdf) FILE_LIST=$(ls -d $INPUT_ITEM) ;; esac
     case $SCRIPT_NAME in
-      musicXmlValidate|musicXml2Db)
-        for INPUT_ITEM in $FILE_LIST ; do ${SCRIPT_DIRECTORY}/$SCRIPT_NAME "$INPUT_ITEM"; done ;;
-      musicXml2Ly|musicXml2Pdf)
-        for INPUT_ITEM in $FILE_LIST ; do
-          LOCALFILENAME=$(basename ${INPUT_ITEM})
+      musicXmlValidate)
+        for FILE_INPUT_ITEM in $FILE_LIST ; do ${SCRIPT_DIRECTORY}/$SCRIPT_NAME "$FILE_INPUT_ITEM"; done ;;
+      musicXmlCompress)
+        for FILE_INPUT_ITEM in $FILE_LIST ; do
+          LOCALFILENAME=$(basename ${FILE_INPUT_ITEM})
           OUTPUT_FILE=${OUTPUT_DIRECTORY}/${LOCALFILENAME%.*}
-          ${SCRIPT_DIRECTORY}/$SCRIPT_NAME $VERBOSE "$INPUT_ITEM" $OUTPUT_FILE
+          ${SCRIPT_DIRECTORY}/$SCRIPT_NAME "$FILE_INPUT_ITEM" $OUTPUT_FILE
+        done
+        ;;
+      musicXml2Db|musicXml2Ly|musicXml2Pdf|ly2Pdf)
+        for FILE_INPUT_ITEM in $FILE_LIST ; do
+          LOCALFILENAME=$(basename ${FILE_INPUT_ITEM})
+          OUTPUT_FILE=${OUTPUT_DIRECTORY}/${LOCALFILENAME%.*}
+          ${SCRIPT_DIRECTORY}/$SCRIPT_NAME $VERBOSE "$FILE_INPUT_ITEM" $OUTPUT_FILE
         done
         ;;
       db2MusicXml|db2Ly|db2Pdf)
@@ -177,13 +184,6 @@ for INPUT_ITEM in "${INPUT_LIST[@]}" ; do
             OUTPUT_FILE=${OUTPUT_DIRECTORY}/${INPUT_ITEM// /_}
             ${SCRIPT_DIRECTORY}/$SCRIPT_NAME $VERBOSE "$INPUT_ITEM" $OUTPUT_FILE
         fi
-        ;;
-      ly2Pdf|musicXmlCompress)
-        for INPUT_ITEM in $FILE_LIST ; do
-          LOCALFILENAME=$(basename ${INPUT_ITEM})
-          OUTPUT_FILE=${OUTPUT_DIRECTORY}/${LOCALFILENAME%.*}
-          ${SCRIPT_DIRECTORY}/$SCRIPT_NAME "$INPUT_ITEM" $OUTPUT_FILE
-        done
         ;;
       *) exit 1 ;;
     esac
