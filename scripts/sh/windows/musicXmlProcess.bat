@@ -96,4 +96,5 @@ goto :init
     exit /b
 :execute
     echo Executing: %*
+    call %*
     exit /b
