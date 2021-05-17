@@ -21,6 +21,9 @@ goto :init
     set SCRIPTS=musicXmlValidate musicXmlCompress musicXml2Db musicXml2Ly musicXml2Pdf db2MusicXml db2Ly db2Pdf ly2Pdf
     set OUTPUT_SCRIPTS=musicXmlCompress musicXml2Ly musicXml2Pdf db2MusicXml db2Ly db2Pdf ly2Pdf
     set INPUT_SCRIPTS=musicXmlValidate musicXmlCompress musicXml2Db musicXml2Ly musicXml2Pdf ly2Pdf
+    set RANGE_START=
+    set RANGE_END=
+    set HAS_RANGE=
 :arguments
     set ARGUMENT="%~1"
     if %ARGUMENT%=="" call :error_message "Usage error" & exit /b 1
@@ -73,7 +76,23 @@ goto :init
     call :execute %1 %VERBOSE% %2 %OUTPUT_DIRECTORY%\%~n2
     exit /b
 :execute_from_database
+    set input_item=%2
+    if not x%input_item:-=%==x%input_item% (for %%S in ("%input_item:-=" "%") do call :set_range_input %%~S)
+    if "%HAS_RANGE%"=="TRUE" (
+        FOR /L %%S IN (%RANGE_START%,1,%RANGE_END%) DO call :execute %1 %VERBOSE% %%~S %OUTPUT_DIRECTORY%\%%~S
+        set RANGE_START=
+        set RANGE_END=
+        exit /b
+    )
     call :execute %1 %VERBOSE% %2 %OUTPUT_DIRECTORY%\%~n2
+    exit /b
+:set_range_input
+    set /a range_test=%1 2>nul
+    if not "%range_test%"=="%1" exit /b
+    if "%RANGE_START%"=="" set RANGE_START=%range_test% & exit /b
+    set RANGE_END=%range_test%
+    if not %RANGE_END% GTR %RANGE_START% call :error_message "Invalid range" & exit /b 1
+    set HAS_RANGE=TRUE
     exit /b
 :execute
     echo Executing: %*
