@@ -46,24 +46,27 @@ goto :init
     set OUTPUT_DIRECTORY=%SCRIPT_INPUT%
     if "%OUTPUT_DIRECTORY%"=="" call :error_message "Output directory not found" & exit /b 1
 :get_input_list
+    set /a INPUT_INDEX=0
     :get_input_item
         set ARGUMENT=%~1
         if "%ARGUMENT%"=="" goto :main
-        set INPUT_LIST=%INPUT_LIST% %ARGUMENT%
+        set /a INPUT_INDEX+=1
+        set INPUT_LIST[%INPUT_INDEX%]=%ARGUMENT%
+        set index=%INPUT_INDEX%
         shift
         goto :get_input_item
 :main
-    if "%INPUT_LIST%"=="" call :error_message "Input list is empty" & exit /b 1
-    for %%I in (%INPUT_LIST%) do (
-        if %SCRIPT_NAME%==musicXmlValidate call :execute_input %SCRIPT_NAME% %%I
-        if %SCRIPT_NAME%==musicXmlCompress call :execute_input_output %SCRIPT_NAME% %%I
-        if %SCRIPT_NAME%==musicXml2Db call :execute_input_output_verbose %SCRIPT_NAME% %%I
-        if %SCRIPT_NAME%==musicXml2Ly call :execute_input_output_verbose %SCRIPT_NAME% %%I
-        if %SCRIPT_NAME%==musicXml2Pdf call :execute_input_output_verbose %SCRIPT_NAME% %%I
-        if %SCRIPT_NAME%==ly2Pdf call :execute_input_output_verbose %SCRIPT_NAME% %%I
-        if %SCRIPT_NAME%==db2MusicXml call :execute_from_database %SCRIPT_NAME% %%I
-        if %SCRIPT_NAME%==db2Ly call :execute_from_database %SCRIPT_NAME% %%I
-        if %SCRIPT_NAME%==db2Pdf call :execute_from_database %SCRIPT_NAME% %%I
+    if %INPUT_INDEX%==0 call :error_message "Input list is empty" & exit /b 1
+    for /L %%I in (1,1,%INPUT_INDEX%) do (
+        if %SCRIPT_NAME%==musicXmlValidate call :execute_input %SCRIPT_NAME% !INPUT_LIST[%%I]!
+        if %SCRIPT_NAME%==musicXmlCompress call :execute_input_output %SCRIPT_NAME% !INPUT_LIST[%%I]!
+        if %SCRIPT_NAME%==musicXml2Db call :execute_input_output_verbose %SCRIPT_NAME% !INPUT_LIST[%%I]!
+        if %SCRIPT_NAME%==musicXml2Ly call :execute_input_output_verbose %SCRIPT_NAME% !INPUT_LIST[%%I]!
+        if %SCRIPT_NAME%==musicXml2Pdf call :execute_input_output_verbose %SCRIPT_NAME% !INPUT_LIST[%%I]!
+        if %SCRIPT_NAME%==ly2Pdf call :execute_input_output_verbose %SCRIPT_NAME% !INPUT_LIST[%%I]!
+        if %SCRIPT_NAME%==db2MusicXml call :execute_from_database %SCRIPT_NAME% !INPUT_LIST[%%I]!
+        if %SCRIPT_NAME%==db2Ly call :execute_from_database %SCRIPT_NAME% !INPUT_LIST[%%I]!
+        if %SCRIPT_NAME%==db2Pdf call :execute_from_database %SCRIPT_NAME% !INPUT_LIST[%%I]!
     )
     exit /b 0
 :execute_input
