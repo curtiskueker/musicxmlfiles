@@ -10,8 +10,23 @@ set CLASSPATH=%JAR_DIR%\%JAR_FILE%
 goto :init
 
 :help
-    echo help output
+    call :usage
+    @echo.
+    echo       Compares two MusicXML files.
+    @echo.
+    echo       Diff output is to stdout.
+    @echo.
+    echo       The two MusicXML files are first standardized using xmllint before the diff is performed.
+    @echo.
+    echo       Unlike Unix diff, all '^<' lines appear before all '^>' lines.
+    @echo.
+    echo       INPUT_FILE: the MusicXML input filename.
+    @echo.
+    echo       COMPARE_FILE: the filename of the MusicXML file that the INPUT_FILE is compared to.
     exit /b 0
+:usage
+    echo Usage: musicXmlDiff INPUT_FILE COMPARE_FILE
+    exit /b
 :error_message
     set message=%*
     set message=%message:"=%
@@ -22,7 +37,7 @@ goto :init
     set COMPARE_FILE=
 :arguments
     set ARGUMENT="%~1"
-    if %ARGUMENT%=="" call :error_message "Usage error" & exit /b 1
+    if %ARGUMENT%=="" call :usage & exit /b 1
     set ARGUMENT=%ARGUMENT:"=%
     if "%ARGUMENT%"=="/h" shift & goto :help
     if "%ARGUMENT%"=="--help" shift & goto :help

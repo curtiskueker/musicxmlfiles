@@ -10,8 +10,14 @@ set CLASSPATH=%JAR_DIR%\%JAR_FILE%
 goto :init
 
 :help
-    echo help output
+    call :usage
+    echo Validates a MusicXML file against the MusicXML 3.1 schema.
+    @echo.
+    echo INPUT_FILE: the MusicXML input filename.
     exit /b 0
+:usage
+    echo Usage: musicXmlValidate INPUT_FILE
+    exit /b
 :error_message
     set message=%*
     set message=%message:"=%
@@ -21,7 +27,7 @@ goto :init
     set INPUT_FILE=
 :arguments
     set ARGUMENT="%~1"
-    if %ARGUMENT%=="" call :error_message "Usage error" & exit /b 1
+    if %ARGUMENT%=="" call :usage & exit /b 1
     set ARGUMENT=%ARGUMENT:"=%
     if "%ARGUMENT%"=="/h" shift & goto :help
     if "%ARGUMENT%"=="--help" shift & goto :help

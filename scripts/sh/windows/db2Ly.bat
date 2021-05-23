@@ -10,12 +10,33 @@ set CLASSPATH=%JAR_DIR%\%JAR_FILE%
 goto :init
 
 :help
-    echo help output
+    call :usage
+    @echo.
+    echo        Converts a MusicXML database record to LilyPond.
+    @echo.
+    echo        SCORE_ID: the database record value in the score table, field id.
+    @echo.
+    echo        SCORE_NAME: the database record value in the score table, field score_name.
+    @echo.
+    echo        OUTPUT_FILE: the LilyPond output filename.
+    @echo.
+    echo        If no OUTPUT_FILE argument is given, output is to stdout.
+    @echo.
+    echo OPTIONS
+    echo        /b, --include-breaks
+    echo               include page and system breaks in the LilyPond output
+    @echo.
+    echo        /v, --verbose
+    echo               displays processing output
     exit /b 0
+:usage
+    echo Usage: db2Ly [OPTIONS] SCORE_ID^|SCORE_NAME [OUTPUT_FILE]
+    exit /b
 :error_message
     set message=%*
     set message=%message:"=%
     echo %message% >&2
+    call :usage
     exit /b 1
 :init
     set SCORE_ID=
@@ -24,7 +45,7 @@ goto :init
     set VERBOSE=
 :arguments
     set ARGUMENT="%~1"
-    if %ARGUMENT%=="" call :error_message "Usage error" & exit /b 1
+    if %ARGUMENT%=="" call :usage & exit /b 1
     set ARGUMENT=%ARGUMENT:"=%
     if "%ARGUMENT%"=="/b" set INCLUDE_BREAKS=INCLUDE_BREAKS & shift & goto :arguments
     if "%ARGUMENT%"=="--include-breaks" set INCLUDE_BREAKS=INCLUDE_BREAKS & shift & goto :arguments

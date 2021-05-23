@@ -10,8 +10,23 @@ set CLASSPATH=%JAR_DIR%\%JAR_FILE%
 goto :init
 
 :help
-    echo help output
+    call :usage
+    @echo.
+    echo       Converts a MusicXML database record to a PDF file.
+    @echo.
+    echo       SCORE_ID: the database record value in the score table, field id.
+    @echo.
+    echo       SCORE_NAME: the database record value in the score table, field score_name.
+    @echo.
+    echo       OUTPUT_FILE: the PDF output filename.
+    @echo.
+    echo OPTIONS
+    echo       /v, --verbose
+    echo              displays processing output
     exit /b 0
+:usage
+    echo Usage: db2Pdf [OPTIONS] SCORE_ID^|SCORE_NAME OUTPUT_FILE
+    exit /b
 :error_message
     set message=%*
     set message=%message:"=%
@@ -23,7 +38,7 @@ goto :init
     set VERBOSE=
 :arguments
     set ARGUMENT="%~1"
-    if %ARGUMENT%=="" call :error_message "Usage error" & exit /b 1
+    if %ARGUMENT%=="" call :usage & exit /b 1
     set ARGUMENT=%ARGUMENT:"=%
     if "%ARGUMENT%"=="/h" shift & goto :help
     if "%ARGUMENT%"=="--help" shift & goto :help

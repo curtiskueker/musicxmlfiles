@@ -10,8 +10,17 @@ set CLASSPATH=%JAR_DIR%\%JAR_FILE%
 goto :init
 
 :help
-    echo help output
+    call :usage
+    @echo.
+    echo       Compresses a MusicXML file as a .mxl file.
+    @echo.
+    echo       INPUT_FILE: the MusicXML input filename.
+    @echo.
+    echo       OUTPUT_FILE: the compressed MusicXML output filename.
     exit /b 0
+:usage
+    echo Usage: musicXmlCompress INPUT_FILE OUTPUT_FILE
+    exit /b
 :error_message
     set message=%*
     set message=%message:"=%
@@ -22,7 +31,7 @@ goto :init
     set OUTPUT_FILE=
 :arguments
     set ARGUMENT="%~1"
-    if %ARGUMENT%=="" call :error_message "Usage error" & exit /b 1
+    if %ARGUMENT%=="" call :usage & exit /b 1
     set ARGUMENT=%ARGUMENT:"=%
     if "%ARGUMENT%"=="/h" shift & goto :help
     if "%ARGUMENT%"=="--help" shift & goto :help

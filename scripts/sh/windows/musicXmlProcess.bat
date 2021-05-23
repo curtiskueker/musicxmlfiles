@@ -4,8 +4,77 @@ setlocal EnableDelayedExpansion
 goto :init
 
 :help
-    echo help output
+    call :usage
+    @echo.
+    echo Executes bulk runs of a script by calling SCRIPT_NAME for each item in an INPUT_LIST.
+    @echo.
+    echo An OUTPUT_DIRECTORY argument is required for some values of SCRIPT_NAME.
+    @echo.
+    echo SCRIPT_NAME: One of the following values:
+    @echo.
+    echo musicXmlValidate
+    echo musicXmlCompress
+    echo musicXml2Db
+    echo musicXml2Ly
+    echo musicXml2Pdf
+    echo db2MusicXml
+    echo db2Ly
+    echo db2Pdf
+    echo ly2Pdf
+    @echo.
+    echo OUTPUT_DIRECTORY:  Required for SCRIPT_NAME values that generate output:
+    @echo.
+    echo Output filenames:
+    @echo.
+    echo musicXmlCompress:  Output filenames are same as the MusicXML input filenames, but with a .mxl extension
+    echo musicXml2Ly:  Output filenames are same as the MusicXML input filenames, but with a .ly extension
+    echo musicXml2Pdf:  Output filenames are same as the MusicXML input filenames, but with a .pdf extension
+    echo db2MusicXml:  Output filenames are the Score IDs or score names passed as arguments, with underscores replacing spaces, and a .xml extension
+    echo db2Ly:  Output filenames are the Score IDs or score names passed as arguments, with underscores replacing spaces, and a .ly extension
+    echo db2Pdf:  Output filenames are the Score IDs or score names passed as arguments, with underscores replacing spaces, and a .pdf extension
+    echo ly2Pdf:  Output filenames are same as the LilyPond input filenames, but with a .pdf extension
+    @echo.
+    echo INPUT_LIST: For scripts that take file input (scripts musicXml* and ly2Pdf), the input list is a space-separated list of file names and directories, including wildcards.
+    echo OPTIONS
+    echo        /v, --verbose
+    echo               displays processing output
+    @echo.
+    echo EXAMPLES
+    echo Input list examples:
+    @echo.
+    echo Single file input: files\jsbach\Invention_1.xml
+    @echo.
+    echo A list of files matching a pattern: files\jsbach\Invention_*.xml
+    @echo.
+    echo All files in a directory: files\jsbach\*
+    @echo.
+    echo Database record input (scripts db2*): the input list is a space- or comma-separated list of score names, score IDs, and score ID ranges.
+    @echo.
+    echo Score names that contain commas or spaces need to be placed within quotes.
+    @echo.
+    echo Score ID lists and ranges can be comma-separated lists of ID numbers with dashes indicating score ranges.
+    @echo.
+    echo Score ID range example: 3,18-20,39 will execute score IDs 3, 18, 19, 20, and 39.
+    @echo.
+    echo musicXmlProcess script call examples:
+    @echo.
+    echo Output Score ID database records 1 to 50 as MusicXML to directory files\output:
+    @echo.
+    echo musicXmlProcess db2MusicXml files\output 1-50
+    @echo.
+    echo Output database records with score names "movement 1", "movement 2", "movement 3", and "movement 4" as LilyPond files to directory files\output:
+    @echo.
+    echo musicXmlProcess db2Ly files\output "movement 1","movement 2","movement 3","movement 4"
+    echo or
+    echo musicXmlProcess db2Ly files\output "movement 1" "movement 2" "movement 3" "movement 4"
+    @echo.
+    echo Load all MusicXML files in directory files\jsbach into the database with verbose output:
+    @echo.
+    echo musicXmlProcess /v musicXml2Db files\jsbach\*
     exit /b 0
+:usage
+    echo Usage: musicXmlProcess [OPTIONS] SCRIPT_NAME [OUTPUT_DIRECTORY] INPUT_LIST
+    exit /b
 :error_message
     set message=%*
     set message=%message:"=%
@@ -26,7 +95,7 @@ goto :init
     set HAS_RANGE=
 :arguments
     set ARGUMENT="%~1"
-    if %ARGUMENT%=="" call :error_message "Usage error" & exit /b 1
+    if %ARGUMENT%=="" call :usage & exit /b 1
     set ARGUMENT=%ARGUMENT:"=%
     if "%ARGUMENT%"=="/h" shift & goto :help
     if "%ARGUMENT%"=="--help" shift & goto :help

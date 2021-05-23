@@ -10,8 +10,33 @@ set CLASSPATH=%JAR_DIR%\%JAR_FILE%
 goto :init
 
 :help
-    echo help output
+    call :usage
+    @echo.
+    echo       Converts a MusicXML database record to MusicXML.
+    @echo.
+    echo       SCORE_ID: the database record value in the score table, field id.
+    @echo.
+    echo       SCORE_NAME: the database record value in the score table, field score_name.
+    @echo.
+    echo       OUTPUT_FILE: the XML output filename.
+    @echo.
+    echo       If filename has .mxl extension, output file is zipped, and the /z^|--zipped-file option is required.
+    @echo.
+    echo       If no OUTPUT_FILE argument is given, output is to stdout.
+    @echo.
+    echo OPTIONS
+    echo       /c, --skip-comments
+    echo              don't include XML comments and processing instructions in the XML output
+    @echo.
+    echo       /v, --verbose
+    echo              displays processing output
+    @echo.
+    echo       -z, --zipped-file ZIPPED_FILE_NAME
+    echo              name of XML file included in zipped .mxl output file
     exit /b 0
+:usage
+    echo Usage: db2MusicXml [OPTIONS] SCORE_ID^|SCORE_NAME [OUTPUT_FILE]
+    exit /b
 :error_message
     set message=%*
     set message=%message:"=%
@@ -26,7 +51,7 @@ goto :init
 :arguments
 :arguments
     set ARGUMENT="%~1"
-    if %ARGUMENT%=="" call :error_message "Usage error" & exit /b 1
+    if %ARGUMENT%=="" call :usage & exit /b 1
     set ARGUMENT=%ARGUMENT:"=%
     if "%ARGUMENT%"=="/c" set SKIP_COMMENTS=SKIP_COMMENTS & shift & goto :arguments
     if "%ARGUMENT%"=="--skip-comments" set SKIP_COMMENTS=SKIP_COMMENTS & shift & goto :arguments
