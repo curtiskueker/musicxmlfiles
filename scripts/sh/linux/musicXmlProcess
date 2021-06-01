@@ -94,7 +94,7 @@ get_input_sublist() {
   done
 }
 
-SCRIPT_DIRECTORY=scripts/sh
+SCRIPT_DIRECTORY=scripts/sh/linux
 OUTPUT_DIRECTORY=''
 VERBOSE=''
 
@@ -151,7 +151,14 @@ for INPUT_ITEM in "${INPUT_LIST[@]}" ; do
           ${SCRIPT_DIRECTORY}/$SCRIPT_NAME "$FILE_INPUT_ITEM" $OUTPUT_FILE
         done
         ;;
-      musicXml2Db|musicXml2Ly|musicXml2Pdf|ly2Pdf)
+      musicXml2Db)
+        for FILE_INPUT_ITEM in $FILE_LIST ; do
+          LOCALFILENAME=$(basename ${FILE_INPUT_ITEM})
+          SCORE_NAME=${LOCALFILENAME%.*}
+          ${SCRIPT_DIRECTORY}/$SCRIPT_NAME $VERBOSE "$FILE_INPUT_ITEM" $SCORE_NAME
+        done
+        ;;
+      musicXml2Ly|musicXml2Pdf|ly2Pdf)
         for FILE_INPUT_ITEM in $FILE_LIST ; do
           LOCALFILENAME=$(basename ${FILE_INPUT_ITEM})
           OUTPUT_FILE=${OUTPUT_DIRECTORY}/${LOCALFILENAME%.*}
@@ -175,5 +182,5 @@ for INPUT_ITEM in "${INPUT_LIST[@]}" ; do
     esac
 done
 
-exit 0;
+exit 0
 
