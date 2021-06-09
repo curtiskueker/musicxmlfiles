@@ -89,7 +89,6 @@ goto :init
     set SCRIPT_DIRECTORY=C:\Users\farid\Downloads\musicxmltasks\musicxmltasks\scripts
     set SCRIPTS=musicXmlValidate musicXmlCompress musicXml2Db musicXml2Ly musicXml2Pdf db2MusicXml db2Ly db2Pdf ly2Pdf
     set OUTPUT_SCRIPTS=musicXmlCompress musicXml2Ly musicXml2Pdf db2MusicXml db2Ly db2Pdf ly2Pdf
-    set INPUT_SCRIPTS=musicXmlValidate musicXmlCompress musicXml2Db musicXml2Ly musicXml2Pdf ly2Pdf
     set RANGE_START=
     set RANGE_END=
     set HAS_RANGE=
@@ -121,7 +120,6 @@ goto :init
         if "%ARGUMENT%"=="" goto :main
         set /a INPUT_INDEX+=1
         set INPUT_LIST[%INPUT_INDEX%]=%ARGUMENT%
-        set index=%INPUT_INDEX%
         shift
         goto :get_input_item
 :main
