@@ -157,11 +157,15 @@ goto :init
         set RANGE_END=
         exit /b
     )
-    call :execute %1 %VERBOSE% %2 %OUTPUT_DIRECTORY%\%~n2
+    call :execute %1 %VERBOSE% %2 %OUTPUT_DIRECTORY%\%2
     exit /b
 :set_range_input
+    if "%HAS_RANGE%"=="FALSE" exit /b
     set /a range_test=%1 2>nul
-    if not "%range_test%"=="%1" exit /b
+    if not "%range_test%"=="%1" (
+        set HAS_RANGE=FALSE
+        exit /b
+    )
     if "%RANGE_START%"=="" set RANGE_START=%range_test% & exit /b
     set RANGE_END=%range_test%
     if not %RANGE_END% GTR %RANGE_START% call :error_message "Invalid range" & exit /b 1
