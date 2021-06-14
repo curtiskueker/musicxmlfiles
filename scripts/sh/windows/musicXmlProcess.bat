@@ -127,7 +127,7 @@ goto :init
     for /L %%I in (1,1,%INPUT_INDEX%) do (
         if %SCRIPT_NAME%==musicXmlValidate call :execute_input %SCRIPT_NAME% !INPUT_LIST[%%I]!
         if %SCRIPT_NAME%==musicXmlCompress call :execute_input_output %SCRIPT_NAME% !INPUT_LIST[%%I]!
-        if %SCRIPT_NAME%==musicXml2Db call :execute_input_output_verbose %SCRIPT_NAME% !INPUT_LIST[%%I]!
+        if %SCRIPT_NAME%==musicXml2Db call :execute_input_verbose %SCRIPT_NAME% !INPUT_LIST[%%I]!
         if %SCRIPT_NAME%==musicXml2Ly call :execute_input_output_verbose %SCRIPT_NAME% !INPUT_LIST[%%I]!
         if %SCRIPT_NAME%==musicXml2Pdf call :execute_input_output_verbose %SCRIPT_NAME% !INPUT_LIST[%%I]!
         if %SCRIPT_NAME%==ly2Pdf call :execute_input_output_verbose %SCRIPT_NAME% !INPUT_LIST[%%I]!
@@ -141,6 +141,9 @@ goto :init
     exit /b
 :execute_input_output
     call :execute %1 %2 %OUTPUT_DIRECTORY%\%~n2
+    exit /b
+:execute_input_verbose
+    call :execute %1 %VERBOSE% %2 %~n2
     exit /b
 :execute_input_output_verbose
     call :execute %1 %VERBOSE% %2 %OUTPUT_DIRECTORY%\%~n2
