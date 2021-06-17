@@ -1,4 +1,5 @@
 @echo off
+setlocal
 
 set JAR_DIR=C:\Users\farid\Downloads\musicxmltasks\musicxmltasks\lib
 set JAR_FILE=musicxmltasks.jar
